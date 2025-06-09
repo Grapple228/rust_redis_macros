@@ -198,7 +198,7 @@ dependencies = [
  "async-trait",
  "deadpool-redis",
  "derive_more",
- "grapple_redis_macros 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "grapple_redis_macros 0.1.0",
  "serde",
  "serde_json",
  "tokio",
@@ -208,8 +208,10 @@ dependencies = [
 [[package]]
 name = "grapple_redis_macros"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ef0322680bdf2b14222f435ee51a586a59beeaaeadc9d18666c24c5a6890a90e"
 dependencies = [
- "grapple_db",
+ "deadpool-redis",
  "quote",
  "serde",
  "serde_json",
@@ -218,11 +220,9 @@ dependencies = [
 
 [[package]]
 name = "grapple_redis_macros"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef0322680bdf2b14222f435ee51a586a59beeaaeadc9d18666c24c5a6890a90e"
+version = "0.2.0"
 dependencies = [
- "deadpool-redis",
+ "grapple_db",
  "quote",
  "serde",
  "serde_json",
