@@ -18,7 +18,28 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-grapple_redis_macros = "0.1.0"
+grapple_redis_macros = "0.2"
+serde_json = "1"
+```
+
+## Example
+
+```rust
+// Or any library that re-imports redis-rs
+use redis::{self, FromRedisValue};
+use grapple_redis_macros::FromRedisValue;
+
+// Add `FromRedisValue` macros
+#[derive(serde::Serialize, serde::Deserialize, FromRedisValue)]
+struct MyStruct{
+    field1: String,
+    field2: i32,
+}
+
+fn example(redis_value: &redis::Value) -> Result<MyStruct, redis::RedisError> {
+     MyStruct::from_redis_value(redis_value)
+}
+
 ```
 
 ## License

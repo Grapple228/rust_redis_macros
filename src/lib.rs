@@ -24,8 +24,10 @@ use syn::{parse_macro_input, DeriveInput};
 ///
 /// # Examples
 ///
-/// ```rust
-/// use grapple_db::redis::FromRedisValue;
+/// ```rust, no_run
+/// // redis-rs, since it reimported in grapple_db, you can use it like this
+/// use grapple_db::redis::{self, FromRedisValue};
+/// use grapple_redis_macros::FromRedisValue;
 /// use serde::{Deserialize, Serialize};
 ///
 /// #[derive(Debug, Deserialize, Serialize, FromRedisValue)]
@@ -34,7 +36,7 @@ use syn::{parse_macro_input, DeriveInput};
 ///     field2: i32,
 /// }
 ///
-/// fn example(redis_value: &grapple_db::redis::Value) -> Result<MyStruct, grapple_db::redis::RedisError> {
+/// fn example(redis_value: &redis::Value) -> Result<MyStruct, redis::RedisError> {
 ///     MyStruct::from_redis_value(redis_value)
 /// }
 /// ```
@@ -44,13 +46,13 @@ pub fn from_redis_value_derive(input: TokenStream) -> TokenStream {
     let name = input.ident;
 
     let expanded = quote! {
-        impl deadpool_redis::redis::FromRedisValue for #name {
-            fn from_redis_value(v: &deadpool_redis::redis::Value) -> deadpool_redis::redis::RedisResult<Self> {
+        impl redis::FromRedisValue for #name {
+            fn from_redis_value(v: &redis::Value) -> redis::RedisResult<Self> {
                 let json_string: String = String::from_redis_value(v)?;
 
                 let model: Self = serde_json::from_str(&json_string).map_err(|_| {
-                    deadpool_redis::redis::RedisError::from((
-                        deadpool_redis::redis::ErrorKind::TypeError,
+                    redis::RedisError::from((
+                        redis::ErrorKind::TypeError,
                         "Failed to deserialize",
                     ))
                 })?;
